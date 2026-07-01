@@ -374,5 +374,49 @@
     }
 </script>
 
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(err => console.log("Service Worker Error:", err));
+  });
+}
+</script>
+
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const installBtn = document.createElement("button");
+    installBtn.innerText = "📲 Install App";
+    installBtn.id = "installAppBtn";
+
+    installBtn.style.position = "fixed";
+    installBtn.style.bottom = "20px";
+    installBtn.style.right = "20px";
+    installBtn.style.padding = "12px 18px";
+    installBtn.style.background = "#1e3c72";
+    installBtn.style.color = "#fff";
+    installBtn.style.border = "none";
+    installBtn.style.borderRadius = "12px";
+    installBtn.style.fontSize = "16px";
+    installBtn.style.zIndex = "9999";
+    installBtn.style.boxShadow = "0 4px 10px rgba(0,0,0,.3)";
+
+    document.body.appendChild(installBtn);
+
+    installBtn.addEventListener("click", async () => {
+        installBtn.style.display = "none";
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+    });
+});
+</script>
+
 </body>
 </html>
