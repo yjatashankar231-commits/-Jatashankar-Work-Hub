@@ -4,193 +4,367 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jatashankar Work Hub</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            --bg-color: #f4f6f9;
+            --bg-color: #f4f7fa;
             --card-bg: #ffffff;
-            --text-color: #333333;
-            --primary-color: #007bff;
+            --text-color: #2c3e50;
+            --primary: #1e3c72;
+            --accent: #007bff;
+            --success: #28a745;
+            --danger: #dc3545;
             --border-radius: 12px;
-            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow: 0 4px 8px rgba(0,0,0,0.06);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
+            background-color: var(--bg-color); color: var(--text-color);
+            margin: 0; padding: 10px; display: flex; justify-content: center;
         }
 
-        .dashboard {
-            width: 100%;
-            max-width: 480px;
-            background: transparent;
-        }
+        .app-container { width: 100%; max-width: 500px; padding-bottom: 30px; }
+        .page { display: none; }
+        .page.active { display: block; }
 
-        /* Header Section */
         .header {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), #2a5298);
+            color: white; padding: 18px; border-radius: var(--border-radius);
+            box-shadow: var(--shadow); margin-bottom: 15px; position: relative;
+        }
+        .header h1 { margin: 0; font-size: 1.3rem; }
+        .back-btn {
+            position: absolute; top: 18px; right: 15px;
+            background: rgba(255,255,255,0.25); color: white; border: none;
+            padding: 5px 10px; border-radius: 5px; cursor: pointer; font-weight: bold;
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 1.4rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header .date {
-            margin-top: 8px;
-            font-size: 0.9rem;
-            opacity: 0.9;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Section Titles */
-        .section-title {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #666;
-            margin: 15px 0 10px 5px;
-            font-weight: 700;
-        }
-
-        /* Grid Layout for Task Buttons */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        /* Utility/Full Width Menu */
-        .list-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        /* Menu Item Styles */
+        .section-title { font-size: 0.85rem; color: #7f8c8d; margin: 15px 0 10px 5px; font-weight: bold; text-transform: uppercase; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .menu-item {
-            background: var(--card-bg);
-            border: 1px solid #eef2f5;
-            border-radius: var(--border-radius);
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            font-size: 1rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
+            background: var(--card-bg); border: 1px solid #eef2f5; border-radius: var(--border-radius);
+            padding: 15px 5px; display: flex; flex-direction: column; align-items: center;
+            text-align: center; font-weight: 600; font-size: 0.9rem; box-shadow: var(--shadow); cursor: pointer;
         }
+        .menu-item .icon { font-size: 1.8rem; margin-bottom: 5px; }
 
-        .menu-item:active {
-            transform: scale(0.98);
-            background-color: #f8f9fa;
+        .form-card { background: var(--card-bg); padding: 15px; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 0.9rem;
         }
-
-        /* Grid Specific Adjustments */
-        .grid .menu-item {
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-            padding: 20px 10px;
+        
+        .btn {
+            width: 100%; padding: 12px; background: var(--accent); color: white;
+            border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px;
         }
+        .btn-success { background: var(--success); }
+        .btn-half { width: 48%; display: inline-block; }
+        .flex-btns { display: flex; justify-content: space-between; margin-top:15px; }
 
-        .grid .menu-item span.icon {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-
-        .list-menu .menu-item span.icon {
-            font-size: 1.4rem;
-        }
-
-        .list-menu .menu-item::after {
-            content: '➔';
-            margin-left: auto;
-            color: #ccc;
-            font-size: 0.9rem;
+        .data-card { background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid var(--accent); box-shadow: var(--shadow); }
+        .data-card h4 { margin: 0 0 5px 0; font-size: 1rem; color: var(--primary); }
+        .data-card p { margin: 4px 0; font-size: 0.85rem; color: #444; }
+        .delete-btn { background: var(--danger); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; margin-top: 5px; }
+        
+        /* Print Styles */
+        @media print {
+            .back-btn, .delete-btn, .flex-btns { display: none !important; }
+            body { background: white; }
+            .app-container { max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <div class="header">
-        <h1><span>👤</span> Jatashankar Work Hub</h1>
-        <div class="date"><span>📅</span> Today: 01 Jul 2026</div>
-    </div>
+<div class="app-container">
 
-    <div class="section-title">Daily Operations</div>
-    <div class="grid">
-        <div class="menu-item" onclick="location.href='#travel'">
-            <span class="icon">🚗</span>
-            <span>Travel</span>
+    <div id="home" class="page active">
+        <div class="header">
+            <h1><span>🏠</span> Work Hub Dashboard</h1>
         </div>
-        <div class="menu-item" onclick="location.href='#installation'">
-            <span class="icon">🛠</span>
-            <span>Installation</span>
+
+        <div class="section-title">Field Operations</div>
+        <div class="grid">
+            <div class="menu-item" onclick="nav('page-travel')"><span class="icon">🚗</span>Travel Entry</div>
+            <div class="menu-item" onclick="nav('page-install')"><span class="icon">🛠</span>Installation</div>
+            <div class="menu-item" onclick="nav('page-sr')"><span class="icon">🔧</span>SR Form</div>
+            <div class="menu-item" onclick="nav('page-sr-closed')"><span class="icon">✅</span>SR Closed</div>
+            <div class="menu-item" onclick="nav('page-visit')"><span class="icon">🏗</span>Site Visit</div>
+            <div class="menu-item" onclick="nav('page-restore')"><span class="icon">♻️</span>Site Restore</div>
+            <div class="menu-item" onclick="nav('page-other')"><span class="icon">📝</span>Other Work</div>
         </div>
-        <div class="menu-item" onclick="location.href='#sr'">
-            <span class="icon">🔧</span>
-            <span>SR</span>
-        </div>
-        <div class="menu-item" onclick="location.href='#sr-closed'">
-            <span class="icon">✅</span>
-            <span>SR Closed</span>
-        </div>
-        <div class="menu-item" onclick="location.href='#site-visit'">
-            <span class="icon">🏗</span>
-            <span>Site Visit</span>
-        </div>
-        <div class="menu-item" onclick="location.href='#site-restore'">
-            <span class="icon">♻️</span>
-            <span>Site Restore</span>
-        </div>
-        <div class="menu-item" onclick="location.href='#project'">
-            <span class="icon">📋</span>
-            <span>Project</span>
-        </div>
-        <div class="menu-item" onclick="location.href='#other-work'">
-            <span class="icon">📝</span>
-            <span>Other Work</span>
+
+        <div class="section-title">Database & Exports</div>
+        <div class="grid">
+            <div class="menu-item" style="grid-column: span 2;" onclick="loadHistory()"><span class="icon">📊</span>Daily Report & History</div>
         </div>
     </div>
 
-    <div class="section-title">Management & Insights</div>
-    <div class="list-menu">
-        <div class="menu-item" onclick="location.href='#reports'">
-            <span class="icon">📊</span>
-            <span>Reports</span>
-        </div>
-        <div class="menu-item" onclick="location.href='#history'">
-            <span class="icon">📁</span>
-            <span>History</span>
-        </div>
-        <div class="menu-item" onclick="location.href='#settings'">
-            <span class="icon">⚙️</span>
-            <span>Settings</span>
+    <div id="page-travel" class="page">
+        <div class="header"><h1>🚗 Travel Entry</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Travel')">
+                <div class="form-group"><label>From (Location A)</label><input type="text" id="t-from" required></div>
+                <div class="form-group"><label>To (Location B)</label><input type="text" id="t-to" required></div>
+                <button type="button" class="btn btn-success" style="padding: 8px; font-size: 0.85rem; margin-bottom: 10px;" onclick="simulateDistance()">🔄 Auto Calculate KM</button>
+                <div class="form-group"><label>Total Distance (KM)</label><input type="number" id="t-km" placeholder="Calculated or Manual Entry" required></div>
+                <button type="submit" class="btn">💾 Save Travel</button>
+            </form>
         </div>
     </div>
+
+    <div id="page-install" class="page">
+        <div class="header"><h1>🛠 Installation Form</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Installation')">
+                <div class="form-group"><label>ISP Name</label><input type="text" id="i-isp" value="GTPL" required></div>
+                <div class="form-group"><label>Order ID</label><input type="text" id="i-order" required></div>
+                <div class="form-group"><label>Black/White IPTV</label><select id="i-iptv"><option>Yes</option><option>No</option></select></div>
+                <div class="form-group"><label>City</label><input type="text" id="i-city" value="Ahmedabad" required></div>
+                <div class="form-group"><label>Site Name</label><input type="text" id="i-site" required></div>
+                <div class="form-group"><label>Customer Name</label><input type="text" id="i-name" required></div>
+                <div class="form-group"><label>Mobile Number</label><input type="tel" id="i-mobile" required></div>
+                <div class="form-group"><label>Address</label><textarea id="i-address" rows="2" required></textarea></div>
+                <div class="form-group"><label>Received Time</label><input type="datetime-local" id="i-recv" required></div>
+                <div class="form-group"><label>Installation Date & Time</label><input type="datetime-local" id="i-inst" required></div>
+                <div class="form-group"><label>Remark If Delayed</label><input type="text" id="i-remark" value="Same Day"></div>
+                <button type="submit" class="btn">💾 Save Installation</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-sr" class="page">
+        <div class="header"><h1>🔧 SR Form</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'SR Open')">
+                <div class="form-group"><label>SR No.</label><input type="text" id="sr-no" required></div>
+                <div class="form-group"><label>Address</label><textarea id="sr-addr" rows="2" required></textarea></div>
+                <div class="form-group"><label>Customer Name</label><input type="text" id="sr-name" required></div>
+                <div class="form-group"><label>Customer Mobile</label><input type="tel" id="sr-mobile" required></div>
+                <div class="form-group"><label>Issue Type</label><input type="text" id="sr-issue" required></div>
+                <div class="form-group">
+                    <label>ISP Name</label>
+                    <select id="sr-isp">
+                        <option>Airtel</option><option>GTPL</option><option>Kingnet</option>
+                        <option>ACT</option><option>TATA</option><option>Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">💾 Save SR</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-sr-closed" class="page">
+        <div class="header"><h1>✅ SR Closed Form</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'SR Closed')">
+                <div class="form-group"><label>SR Number</label><input type="text" id="src-no" required></div>
+                <div class="form-group"><label>Address</label><textarea id="src-addr" rows="2" required></textarea></div>
+                <div class="form-group"><label>Site Name</label><input type="text" id="src-site" required></div>
+                <button type="submit" class="btn">💾 Close SR</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-visit" class="page">
+        <div class="header"><h1>🏗 Site Visit</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Site Visit')">
+                <div class="form-group"><label>Visit Details (Manual Type)</label><textarea id="sv-detail" rows="4" placeholder="Jo kaam kiya wo yahan type karein..." required></textarea></div>
+                <button type="submit" class="btn">💾 Save Visit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-restore" class="page">
+        <div class="header"><h1>♻️ Site Restore</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Site Restore')">
+                <div class="form-group">
+                    <label>Restore Action</label>
+                    <select id="res-type">
+                        <option>Fatbox Restore</option><option>Routine Change</option>
+                        <option>Splicing</option><option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Attach Pic</label><input type="file" id="res-pic" accept="image/*"></div>
+                <button type="submit" class="btn">💾 Save Restore</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-other" class="page">
+        <div class="header"><h1>📝 Other Work</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Other Work')">
+                <div class="form-group"><label>Work Details (Manual Type)</label><textarea id="ow-detail" rows="4" placeholder="Any other activity details..." required></textarea></div>
+                <button type="submit" class="btn">💾 Save Work</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-history" class="page">
+        <div class="header">
+            <h1>📊 Database & History</h1>
+            <button class="back-btn" onclick="nav('home')">Back</button>
+        </div>
+        
+        <div class="form-group" style="background:white; padding:10px; border-radius:8px;">
+            <label>Filter by Month:</label>
+            <input type="month" id="month-filter" onchange="loadHistory()">
+        </div>
+
+        <div id="export-area">
+            <div id="history-content"></div>
+        </div>
+
+        <div class="flex-btns">
+            <button class="btn btn-half" style="background:#28a745;" onclick="exportExcel()">📗 Export Excel</button>
+            <button class="btn btn-half" style="background:#dc3545;" onclick="exportPDF()">📕 Print PDF</button>
+        </div>
+    </div>
+
 </div>
+
+<script>
+    // Navigation
+    function nav(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    // Auto KM Simulator
+    function simulateDistance() {
+        let from = document.getElementById('t-from').value;
+        let to = document.getElementById('t-to').value;
+        if(from && to) {
+            // Generating a random logical distance between 2 to 25 km for demo
+            let randomKm = Math.floor(Math.random() * 23) + 2;
+            document.getElementById('t-km').value = randomKm;
+            alert(`Auto Calculated: Approx ${randomKm} KM from ${from} to ${to}. (You can edit this manually).`);
+        } else {
+            alert("Pehle Location A aur Location B dalein.");
+        }
+    }
+
+    // Save Data to Local Storage
+    function saveForm(event, type) {
+        event.preventDefault();
+        let dataStr = "";
+
+        if(type === 'Travel') {
+            dataStr = `From: ${document.getElementById('t-from').value} | To: ${document.getElementById('t-to').value} | Distance: ${document.getElementById('t-km').value} KM`;
+        } else if(type === 'Installation') {
+            dataStr = `ISP: ${document.getElementById('i-isp').value} | Order: ${document.getElementById('i-order').value} | IPTV: ${document.getElementById('i-iptv').value} | City: ${document.getElementById('i-city').value} | Site: ${document.getElementById('i-site').value} | Name: ${document.getElementById('i-name').value} | Mobile: ${document.getElementById('i-mobile').value} | Address: ${document.getElementById('i-address').value} | Recv: ${document.getElementById('i-recv').value} | Inst: ${document.getElementById('i-inst').value} | Remark: ${document.getElementById('i-remark').value}`;
+        } else if(type === 'SR Open') {
+            dataStr = `SR No: ${document.getElementById('sr-no').value} | Name: ${document.getElementById('sr-name').value} | Mobile: ${document.getElementById('sr-mobile').value} | Issue: ${document.getElementById('sr-issue').value} | ISP: ${document.getElementById('sr-isp').value} | Address: ${document.getElementById('sr-addr').value}`;
+        } else if(type === 'SR Closed') {
+            dataStr = `SR No: ${document.getElementById('src-no').value} | Site: ${document.getElementById('src-site').value} | Address: ${document.getElementById('src-addr').value}`;
+        } else if(type === 'Site Visit') {
+            dataStr = `Details: ${document.getElementById('sv-detail').value}`;
+        } else if(type === 'Site Restore') {
+            let picName = document.getElementById('res-pic').files[0] ? "Photo Attached" : "No Photo";
+            dataStr = `Action: ${document.getElementById('res-type').value} | Pic: ${picName}`;
+        } else if(type === 'Other Work') {
+            dataStr = `Details: ${document.getElementById('ow-detail').value}`;
+        }
+
+        const logEntry = {
+            id: Date.now(),
+            type: type,
+            date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format for easy filtering
+            time: new Date().toLocaleTimeString(),
+            details: dataStr
+        };
+
+        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+        logs.push(logEntry);
+        localStorage.setItem('js_work_data', JSON.stringify(logs));
+
+        alert(`${type} data saved successfully in permanent storage!`);
+        event.target.reset();
+        nav('home');
+    }
+
+    // Load History with Month Filter
+    function loadHistory() {
+        nav('page-history');
+        const container = document.getElementById('history-content');
+        container.innerHTML = "";
+        
+        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+        let monthFilter = document.getElementById('month-filter').value; // format YYYY-MM
+
+        if(monthFilter) {
+            logs = logs.filter(item => item.date.startsWith(monthFilter));
+        }
+
+        if(logs.length === 0) {
+            container.innerHTML = "<p style='text-align:center;'>No records found for this period.</p>";
+            return;
+        }
+
+        logs.reverse().forEach(item => {
+            container.innerHTML += `
+                <div class="data-card">
+                    <h4>${item.type} <span style="float:right; font-size:0.8rem; color:gray;">${item.date}</span></h4>
+                    <p>${item.details}</p>
+                    <button class="delete-btn" onclick="deleteLog(${item.id})">Delete</button>
+                </div>
+            `;
+        });
+    }
+
+    // Delete Log
+    function deleteLog(id) {
+        if(confirm("Parmanent delete karna chahte hain?")) {
+            let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+            logs = logs.filter(item => item.id !== id);
+            localStorage.setItem('js_work_data', JSON.stringify(logs));
+            loadHistory();
+        }
+    }
+
+    // Export to Excel (CSV)
+    function exportExcel() {
+        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+        let monthFilter = document.getElementById('month-filter').value;
+        if(monthFilter) logs = logs.filter(item => item.date.startsWith(monthFilter));
+
+        if(logs.length === 0) { alert("Excel banane ke liye koi data nahi hai."); return; }
+
+        let csvContent = "data:text/csv;charset=utf-8,Date,Time,Task Type,Details\n";
+        logs.forEach(item => {
+            let cleanDetails = item.details.replace(/,/g, " "); // Remove commas to prevent CSV breakage
+            csvContent += `${item.date},${item.time},${item.type},${cleanDetails}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Work_Report_${monthFilter || 'All'}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Export to PDF
+    function exportPDF() {
+        const element = document.getElementById('export-area');
+        const opt = {
+            margin:       10,
+            filename:     'Work_Report.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
 
 </body>
 </html>
