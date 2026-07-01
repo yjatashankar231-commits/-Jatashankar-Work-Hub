@@ -83,8 +83,11 @@
 
     <div id="home" class="page active">
         <div class="header">
-            <h1><span>🏠</span> Work Hub Dashboard</h1>
-        </div>
+            <h1 style="display:flex; align-items:center; gap:10px;">
+                <img src="assets/logo.png" width="45" height="45" style="border-radius:50%; object-fit: cover;" alt="Logo">
+                Jatashankar Work Hub
+            </h1>
+            </div>
 
         <div class="section-title">Field Operations</div>
         <div class="grid">
@@ -242,7 +245,6 @@
         let from = document.getElementById('t-from').value;
         let to = document.getElementById('t-to').value;
         if(from && to) {
-            // Generating a random logical distance between 2 to 25 km for demo
             let randomKm = Math.floor(Math.random() * 23) + 2;
             document.getElementById('t-km').value = randomKm;
             alert(`Auto Calculated: Approx ${randomKm} KM from ${from} to ${to}. (You can edit this manually).`);
@@ -276,7 +278,7 @@
         const logEntry = {
             id: Date.now(),
             type: type,
-            date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format for easy filtering
+            date: new Date().toISOString().split('T')[0],
             time: new Date().toLocaleTimeString(),
             details: dataStr
         };
@@ -297,7 +299,7 @@
         container.innerHTML = "";
         
         let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
-        let monthFilter = document.getElementById('month-filter').value; // format YYYY-MM
+        let monthFilter = document.getElementById('month-filter').value;
 
         if(monthFilter) {
             logs = logs.filter(item => item.date.startsWith(monthFilter));
@@ -339,7 +341,7 @@
 
         let csvContent = "data:text/csv;charset=utf-8,Date,Time,Task Type,Details\n";
         logs.forEach(item => {
-            let cleanDetails = item.details.replace(/,/g, " "); // Remove commas to prevent CSV breakage
+            let cleanDetails = item.details.replace(/,/g, " ");
             csvContent += `${item.date},${item.time},${item.type},${cleanDetails}\n`;
         });
 
