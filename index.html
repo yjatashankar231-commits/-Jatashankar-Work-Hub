@@ -90,7 +90,7 @@
     <div id="home" class="page active">
         <div class="header">
             <h1 style="display:flex; align-items:center; gap:10px;">
-                <img src="assets/logo.png" width="45" height="45" style="border-radius:50%; object-fit: cover;" alt="Logo">
+                <img src="icon-192.png" width="45" height="45" style="border-radius:50%; object-fit: cover;" alt="Logo">
                 Jatashankar Work Hub
             </h1>
         </div>
@@ -119,4 +119,317 @@
                 <div class="form-group"><label>From (Location A)</label><input type="text" id="t-from" required></div>
                 <div class="form-group"><label>To (Location B)</label><input type="text" id="t-to" required></div>
                 <button type="button" class="btn btn-success" style="padding: 8px; font-size: 0.85rem; margin-bottom: 10px;" onclick="simulateDistance()">🔄 Auto Calculate KM</button>
-                <div class="form-group"><label>Total Distance (KM)</label><input type="number" id="t-km" placeholder
+                <div class="form-group"><label>Total Distance (KM)</label><input type="number" id="t-km" placeholder="Calculated or Manual Entry" required></div>
+                <button type="submit" class="btn">💾 Save Travel</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-install" class="page">
+        <div class="header"><h1>🛠 Installation Form</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Installation')">
+                <div class="form-group"><label>ISP Name</label><input type="text" id="i-isp" value="GTPL" required></div>
+                <div class="form-group"><label>Order ID</label><input type="text" id="i-order" required></div>
+                <div class="form-group"><label>Black/White IPTV</label><select id="i-iptv"><option>Yes</option><option>No</option></select></div>
+                <div class="form-group"><label>City</label><input type="text" id="i-city" value="Ahmedabad" required></div>
+                <div class="form-group"><label>Site Name</label><input type="text" id="i-site" required></div>
+                <div class="form-group"><label>Customer Name</label><input type="text" id="i-name" required></div>
+                <div class="form-group"><label>Mobile Number</label><input type="tel" id="i-mobile" required></div>
+                <div class="form-group"><label>Address</label><textarea id="i-address" rows="2" required></textarea></div>
+                <div class="form-group"><label>Received Time</label><input type="datetime-local" id="i-recv" required></div>
+                <div class="form-group"><label>Installation Date & Time</label><input type="datetime-local" id="i-inst" required></div>
+                <div class="form-group"><label>Remark If Delayed</label><input type="text" id="i-remark" value="Same Day"></div>
+                <button type="submit" class="btn">💾 Save Installation</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-sr" class="page">
+        <div class="header"><h1>🔧 SR Form</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'SR Open')">
+                <div class="form-group"><label>SR No.</label><input type="text" id="sr-no" required></div>
+                <div class="form-group"><label>Address</label><textarea id="sr-addr" rows="2" required></textarea></div>
+                <div class="form-group"><label>Customer Name</label><input type="text" id="sr-name" required></div>
+                <div class="form-group"><label>Customer Mobile</label><input type="tel" id="sr-mobile" required></div>
+                <div class="form-group"><label>Issue Type</label><input type="text" id="sr-issue" required></div>
+                <div class="form-group">
+                    <label>ISP Name</label>
+                    <select id="sr-isp">
+                        <option>Airtel</option><option>GTPL</option><option>Kingnet</option>
+                        <option>ACT</option><option>TATA</option><option>Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">💾 Save SR</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-sr-closed" class="page">
+        <div class="header"><h1>✅ SR Closed Form</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'SR Closed')">
+                <div class="form-group"><label>SR Number</label><input type="text" id="src-no" required></div>
+                <div class="form-group"><label>Address</label><textarea id="src-addr" rows="2" required></textarea></div>
+                <div class="form-group"><label>Site Name</label><input type="text" id="src-site" required></div>
+                <button type="submit" class="btn">💾 Close SR</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-visit" class="page">
+        <div class="header"><h1>🏗 Site Visit</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Site Visit')">
+                <div class="form-group"><label>Visit Details (Manual Type)</label><textarea id="sv-detail" rows="4" placeholder="Jo kaam kiya wo yahan type karein..." required></textarea></div>
+                <button type="submit" class="btn">💾 Save Visit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-restore" class="page">
+        <div class="header"><h1>♻️ Site Restore</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Site Restore')">
+                <div class="form-group">
+                    <label>Restore Action</label>
+                    <select id="res-type">
+                        <option>Fatbox Restore</option><option>Routine Change</option>
+                        <option>Splicing</option><option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Attach Pic</label><input type="file" id="res-pic" accept="image/*"></div>
+                <button type="submit" class="btn">💾 Save Restore</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-other" class="page">
+        <div class="header"><h1>📝 Other Work</h1><button class="back-btn" onclick="nav('home')">Back</button></div>
+        <div class="form-card">
+            <form onsubmit="saveForm(event, 'Other Work')">
+                <div class="form-group"><label>Work Details (Manual Type)</label><textarea id="ow-detail" rows="4" placeholder="Any other activity details..." required></textarea></div>
+                <button type="submit" class="btn">💾 Save Work</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="page-history" class="page">
+        <div class="header">
+            <h1>📊 Database & History</h1>
+            <button class="back-btn" onclick="nav('home')">Back</button>
+        </div>
+        
+        <div class="form-group" style="background:white; padding:10px; border-radius:8px;">
+            <label>Filter by Month:</label>
+            <input type="month" id="month-filter" onchange="loadHistory()">
+        </div>
+
+        <div id="export-area">
+            <div id="history-content"></div>
+        </div>
+
+        <div class="flex-btns">
+            <button class="btn btn-half" style="background:#28a745;" onclick="exportExcel()">📗 Export Excel</button>
+            <button class="btn btn-half" style="background:#dc3545;" onclick="exportPDF()">📕 Print PDF</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Navigation
+    function nav(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    // Auto KM Simulator
+    function simulateDistance() {
+        let from = document.getElementById('t-from').value;
+        let to = document.getElementById('t-to').value;
+        if(from && to) {
+            let randomKm = Math.floor(Math.random() * 23) + 2;
+            document.getElementById('t-km').value = randomKm;
+            alert(`Auto Calculated: Approx ${randomKm} KM from ${from} to ${to}. (You can edit this manually).`);
+        } else {
+            alert("Pehle Location A aur Location B dalein.");
+        }
+    }
+
+    // Save Data to Local Storage
+    function saveForm(event, type) {
+        event.preventDefault();
+        let dataStr = "";
+
+        if(type === 'Travel') {
+            dataStr = `From: ${document.getElementById('t-from').value} | To: ${document.getElementById('t-to').value} | Distance: ${document.getElementById('t-km').value} KM`;
+        } else if(type === 'Installation') {
+            dataStr = `ISP: ${document.getElementById('i-isp').value} | Order: ${document.getElementById('i-order').value} | IPTV: ${document.getElementById('i-iptv').value} | City: ${document.getElementById('i-city').value} | Site: ${document.getElementById('i-site').value} | Name: ${document.getElementById('i-name').value} | Mobile: ${document.getElementById('i-mobile').value} | Address: ${document.getElementById('i-address').value} | Recv: ${document.getElementById('i-recv').value} | Inst: ${document.getElementById('i-inst').value} | Remark: ${document.getElementById('i-remark').value}`;
+        } else if(type === 'SR Open') {
+            dataStr = `SR No: ${document.getElementById('sr-no').value} | Name: ${document.getElementById('sr-name').value} | Mobile: ${document.getElementById('sr-mobile').value} | Issue: ${document.getElementById('sr-issue').value} | ISP: ${document.getElementById('sr-isp').value} | Address: ${document.getElementById('sr-addr').value}`;
+        } else if(type === 'SR Closed') {
+            dataStr = `SR No: ${document.getElementById('src-no').value} | Site: ${document.getElementById('src-site').value} | Address: ${document.getElementById('src-addr').value}`;
+        } else if(type === 'Site Visit') {
+            dataStr = `Details: ${document.getElementById('sv-detail').value}`;
+        } else if(type === 'Site Restore') {
+            let picName = document.getElementById('res-pic').files[0] ? "Photo Attached" : "No Photo";
+            dataStr = `Action: ${document.getElementById('res-type').value} | Pic: ${picName}`;
+        } else if(type === 'Other Work') {
+            dataStr = `Details: ${document.getElementById('ow-detail').value}`;
+        }
+
+        const logEntry = {
+            id: Date.now(),
+            type: type,
+            date: new Date().toISOString().split('T')[0],
+            time: new Date().toLocaleTimeString(),
+            details: dataStr
+        };
+
+        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+        logs.push(logEntry);
+        localStorage.setItem('js_work_data', JSON.stringify(logs));
+
+        alert(`${type} data saved successfully in permanent storage!`);
+        event.target.reset();
+        nav('home');
+    }
+
+    // Load History with Month Filter
+    function loadHistory() {
+        nav('page-history');
+        const container = document.getElementById('history-content');
+        container.innerHTML = "";
+        
+        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+        let monthFilter = document.getElementById('month-filter').value;
+
+        if(monthFilter) {
+            logs = logs.filter(item => item.date.startsWith(monthFilter));
+        }
+
+        if(logs.length === 0) {
+            container.innerHTML = "<p style='text-align:center;'>No records found for this period.</p>";
+            return;
+        }
+
+        logs.reverse().forEach(item => {
+            container.innerHTML += `
+                <div class="data-card">
+                    <h4>${item.type} <span style="float:right; font-size:0.8rem; color:gray;">${item.date}</span></h4>
+                    <p>${item.details}</p>
+                    <button class="delete-btn" onclick="deleteLog(${item.id})">Delete</button>
+                </div>
+            `;
+        });
+    }
+
+    // Delete Log
+    function deleteLog(id) {
+        if(confirm("Parmanent delete karna chahte hain?")) {
+            let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+            logs = logs.filter(item => item.id !== id);
+            localStorage.setItem('js_work_data', JSON.stringify(logs));
+            loadHistory();
+        }
+    }
+
+    // Export to Excel (CSV)
+    function exportExcel() {
+        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+        let monthFilter = document.getElementById('month-filter').value;
+        if(monthFilter) logs = logs.filter(item => item.date.startsWith(monthFilter));
+
+        if(logs.length === 0) { alert("Excel banane ke liye koi data nahi hai."); return; }
+
+        let csvContent = "data:text/csv;charset=utf-8,Date,Time,Task Type,Details\n";
+        logs.forEach(item => {
+            let cleanDetails = item.details.replace(/,/g, " ");
+            csvContent += `${item.date},${item.time},${item.type},${cleanDetails}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Work_Report_${monthFilter || 'All'}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Export to PDF
+    function exportPDF() {
+        const element = document.getElementById('export-area');
+        const opt = {
+            margin:       10,
+            filename:     'Work_Report.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(err => console.log("Service Worker Error:", err));
+  });
+}
+</script>
+
+<script>
+// Fix 2: Fixed complete PWA setup logic here
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  if(document.getElementById("installAppBtn")) return;
+
+  const btn = document.createElement("button");
+  btn.id = "installAppBtn";
+  btn.innerHTML = "📲 Install App";
+
+  btn.style.position = "fixed";
+  btn.style.bottom = "20px";
+  btn.style.right = "20px";
+  btn.style.background = "#1e3c72";
+  btn.style.color = "#fff";
+  btn.style.border = "none";
+  btn.style.padding = "12px 18px";
+  btn.style.borderRadius = "12px";
+  btn.style.fontSize = "16px";
+  btn.style.fontWeight = "bold";
+  btn.style.zIndex = "9999";
+  btn.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+  btn.style.cursor = "pointer";
+
+  document.body.appendChild(btn);
+
+  btn.addEventListener("click", async () => {
+      btn.style.display = "none";
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to prompt: ${outcome}`);
+      deferredPrompt = null;
+      btn.remove();
+  });
+});
+
+window.addEventListener('appinstalled', () => {
+    console.log('PWA installed successfully!');
+    const btn = document.getElementById("installAppBtn");
+    if (btn) btn.remove();
+});
+</script>
+
+</body>
+</html>
