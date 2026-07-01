@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jatashankar Work Hub</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #007bff;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 480px;
+            background: transparent;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header .date {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin: 15px 0 10px 5px;
+            font-weight: 700;
+        }
+
+        /* Grid Layout for Task Buttons */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* Utility/Full Width Menu */
+        .list-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Menu Item Styles */
+        .menu-item {
+            background: var(--card-bg);
+            border: 1px solid #eef2f5;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .menu-item:active {
+            transform: scale(0.98);
+            background-color: #f8f9fa;
+        }
+
+        /* Grid Specific Adjustments */
+        .grid .menu-item {
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .grid .menu-item span.icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .list-menu .menu-item span.icon {
+            font-size: 1.4rem;
+        }
+
+        .list-menu .menu-item::after {
+            content: '➔';
+            margin-left: auto;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="header">
+        <h1><span>👤</span> Jatashankar Work Hub</h1>
+        <div class="date"><span>📅</span> Today: 01 Jul 2026</div>
+    </div>
+
+    <div class="section-title">Daily Operations</div>
+    <div class="grid">
+        <div class="menu-item" onclick="location.href='#travel'">
+            <span class="icon">🚗</span>
+            <span>Travel</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#installation'">
+            <span class="icon">🛠</span>
+            <span>Installation</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#sr'">
+            <span class="icon">🔧</span>
+            <span>SR</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#sr-closed'">
+            <span class="icon">✅</span>
+            <span>SR Closed</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#site-visit'">
+            <span class="icon">🏗</span>
+            <span>Site Visit</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#site-restore'">
+            <span class="icon">♻️</span>
+            <span>Site Restore</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#project'">
+            <span class="icon">📋</span>
+            <span>Project</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#other-work'">
+            <span class="icon">📝</span>
+            <span>Other Work</span>
+        </div>
+    </div>
+
+    <div class="section-title">Management & Insights</div>
+    <div class="list-menu">
+        <div class="menu-item" onclick="location.href='#reports'">
+            <span class="icon">📊</span>
+            <span>Reports</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#history'">
+            <span class="icon">📁</span>
+            <span>History</span>
+        </div>
+        <div class="menu-item" onclick="location.href='#settings'">
+            <span class="icon">⚙️</span>
+            <span>Settings</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
