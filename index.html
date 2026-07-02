@@ -55,7 +55,7 @@
         }
         .menu-item .icon { font-size: 1.8rem; margin-bottom: 5px; }
 
-        .form-card { background: var(--card-bg); padding: 15px; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+        .form-card { background: var(--card-bg); padding: 15px; border-radius: var(--border-radius); box-shadow: var(--shadow); margin-bottom: 15px; }
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; }
         .form-group input, .form-group select, .form-group textarea {
@@ -65,10 +65,11 @@
         .btn {
             width: 100%; padding: 12px; background: var(--accent); color: white;
             border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px;
+            text-align: center; text-decoration: none; box-sizing: border-box;
         }
         .btn-success { background: var(--success); }
-        .btn-half { width: 48%; display: inline-block; }
-        .flex-btns { display: flex; justify-content: space-between; margin-top:15px; }
+        .btn-half { width: 48%; display: inline-block; margin-top: 0; }
+        .flex-btns { display: flex; justify-content: space-between; margin-top: 15px; }
 
         .data-card { background: white; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 5px solid var(--accent); box-shadow: var(--shadow); }
         .data-card h4 { margin: 0 0 5px 0; font-size: 1rem; color: var(--primary); }
@@ -77,7 +78,7 @@
         
         /* Print Styles */
         @media print {
-            .back-btn, .delete-btn, .flex-btns { display: none !important; }
+            .back-btn, .delete-btn, .flex-btns, .form-card, .filter-section { display: none !important; }
             body { background: white; }
             .app-container { max-width: 100%; }
         }
@@ -90,13 +91,41 @@
     <div id="home" class="page active">
         <div class="header">
             <h1 style="display:flex; align-items:center; gap:10px;">
-                <img src="icon-192.png" width="45" height="45" style="border-radius:50%; object-fit: cover;" alt="Logo">
+                <img src="icon-192.png" width="45" height="45" style="border-radius:50%; object-fit: cover;" alt="Logo" onerror="this.style.display='none'">
                 Jatashankar Work Hub
             </h1>
         </div>
 
+        <div class="grid" style="margin-bottom:15px;">
+            <div class="menu-item">
+                <span class="icon">🛠</span>
+                <strong id="totalInstall">0</strong>
+                <small>Installation</small>
+            </div>
+            <div class="menu-item">
+                <span class="icon">🔧</span>
+                <strong id="totalSR">0</strong>
+                <small>SR Open</small>
+            </div>
+            <div class="menu-item">
+                <span class="icon">✅</span>
+                <strong id="totalClosed">0</strong>
+                <small>SR Closed</small>
+            </div>
+            <div class="menu-item">
+                <span class="icon">🚗</span>
+                <strong id="totalTravel">0 KM</strong>
+                <small>Travel</small>
+            </div>
+            <div class="menu-item" style="grid-column: span 2;" onclick="nav('page-pending')">
+                <span class="icon">⏳</span>
+                <strong id="pendingCount">0</strong>
+                <small>Pending Tasks</small>
+            </div>
+        </div>
+
         <div class="section-title">Field Operations</div>
-        <div class="grid">
+        <div class="grid" id="home-grid-1">
             <div class="menu-item" onclick="nav('page-travel')"><span class="icon">🚗</span>Travel Entry</div>
             <div class="menu-item" onclick="nav('page-install')"><span class="icon">🛠</span>Installation</div>
             <div class="menu-item" onclick="nav('page-sr')"><span class="icon">🔧</span>SR Form</div>
@@ -104,6 +133,7 @@
             <div class="menu-item" onclick="nav('page-visit')"><span class="icon">🏗</span>Site Visit</div>
             <div class="menu-item" onclick="nav('page-restore')"><span class="icon">♻️</span>Site Restore</div>
             <div class="menu-item" onclick="nav('page-other')"><span class="icon">📝</span>Other Work</div>
+            <div class="menu-item" onclick="nav('page-pending')"><span class="icon">📋</span>Pending Orders</div>
         </div>
 
         <div class="section-title">Database & Exports</div>
@@ -215,19 +245,80 @@
         </div>
     </div>
 
+    <div id="page-pending" class="page">
+        <div class="header">
+            <h1>📋 Pending Orders</h1>
+            <button class="back-btn" onclick="nav('home')">Back</button>
+        </div>
+        <div class="form-card">
+            <form onsubmit="savePending(event)">
+                <div class="form-group">
+                    <label>Order / SR Number</label>
+                    <input type="text" id="pendingNo" required>
+                </div>
+                <div class="form-group">
+                    <label>Customer Name</label>
+                    <input type="text" id="pendingName" required>
+                </div>
+                <div class="form-group">
+                    <label>Work Type</label>
+                    <select id="pendingType">
+                        <option>Installation</option>
+                        <option>SR</option>
+                        <option>Visit</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select id="pendingPriority">
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">
+                    💾 Save Pending
+                </button>
+            </form>
+        </div>
+        <div id="pendingList" style="margin-top:15px;"></div>
+    </div>
+
     <div id="page-history" class="page">
         <div class="header">
             <h1>📊 Database & History</h1>
             <button class="back-btn" onclick="nav('home')">Back</button>
         </div>
         
-        <div class="form-group" style="background:white; padding:10px; border-radius:8px;">
-            <label>Filter by Month:</label>
-            <input type="month" id="month-filter" onchange="loadHistory()">
+        <div class="filter-section">
+            <div class="form-group" style="background:white; padding:10px; border-radius:8px;">
+                <label>Filter by Month:</label>
+                <input type="month" id="month-filter" onchange="loadHistory()">
+            </div>
+            <div class="form-group" style="background:white; padding:10px; border-radius:8px; margin-top:10px;">
+                <label>Filter by Category:</label>
+                <select id="type-filter" onchange="loadHistory()">
+                    <option value="">All Work</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Installation">Installation</option>
+                    <option value="SR Open">SR Open</option>
+                    <option value="SR Closed">SR Closed</option>
+                    <option value="Site Visit">Site Visit</option>
+                    <option value="Site Restore">Site Restore</option>
+                    <option value="Other Work">Other Work</option>
+                </select>
+            </div>
+            <div class="form-group" style="background:white; padding:10px; border-radius:8px; margin-top:10px;">
+                <label>Search</label>
+                <input type="text"
+                       id="searchBox"
+                       placeholder="Search Customer, Order, SR..."
+                       onkeyup="loadHistory()">
+            </div>
         </div>
 
         <div id="export-area">
-            <div id="history-content"></div>
+            <div id="history-content" style="margin-top: 15px;"></div>
         </div>
 
         <div class="flex-btns">
@@ -244,6 +335,40 @@
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
         window.scrollTo(0,0);
+        updateDashboard(); 
+    }
+
+    // Dashboard Update Logic
+    function updateDashboard() {
+        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
+        let install = 0;
+        let sr = 0;
+        let closed = 0;
+        let travel = 0;
+
+        logs.forEach(item => {
+            if (item.type === "Installation") install++;
+            if (item.type === "SR Open") sr++;
+            if (item.type === "SR Closed") closed++;
+
+            if (item.type === "Travel") {
+                let match = item.details.match(/Distance:\s*(\d+)/);
+                if (match) {
+                    travel += parseInt(match[1]);
+                }
+            }
+        });
+
+        document.getElementById("totalInstall").textContent = install;
+        document.getElementById("totalSR").textContent = sr;
+        document.getElementById("totalClosed").textContent = closed;
+        document.getElementById("totalTravel").textContent = travel + " KM";
+
+        let pending = JSON.parse(localStorage.getItem("pendingOrders")) || [];
+        let countEl = document.getElementById("pendingCount");
+        if(countEl) {
+            countEl.textContent = pending.length;
+        }
     }
 
     // Auto KM Simulator
@@ -259,7 +384,7 @@
         }
     }
 
-    // Save Data to Local Storage
+    // Save Main Forms Data to Local Storage
     function saveForm(event, type) {
         event.preventDefault();
         let dataStr = "";
@@ -267,169 +392,4 @@
         if(type === 'Travel') {
             dataStr = `From: ${document.getElementById('t-from').value} | To: ${document.getElementById('t-to').value} | Distance: ${document.getElementById('t-km').value} KM`;
         } else if(type === 'Installation') {
-            dataStr = `ISP: ${document.getElementById('i-isp').value} | Order: ${document.getElementById('i-order').value} | IPTV: ${document.getElementById('i-iptv').value} | City: ${document.getElementById('i-city').value} | Site: ${document.getElementById('i-site').value} | Name: ${document.getElementById('i-name').value} | Mobile: ${document.getElementById('i-mobile').value} | Address: ${document.getElementById('i-address').value} | Recv: ${document.getElementById('i-recv').value} | Inst: ${document.getElementById('i-inst').value} | Remark: ${document.getElementById('i-remark').value}`;
-        } else if(type === 'SR Open') {
-            dataStr = `SR No: ${document.getElementById('sr-no').value} | Name: ${document.getElementById('sr-name').value} | Mobile: ${document.getElementById('sr-mobile').value} | Issue: ${document.getElementById('sr-issue').value} | ISP: ${document.getElementById('sr-isp').value} | Address: ${document.getElementById('sr-addr').value}`;
-        } else if(type === 'SR Closed') {
-            dataStr = `SR No: ${document.getElementById('src-no').value} | Site: ${document.getElementById('src-site').value} | Address: ${document.getElementById('src-addr').value}`;
-        } else if(type === 'Site Visit') {
-            dataStr = `Details: ${document.getElementById('sv-detail').value}`;
-        } else if(type === 'Site Restore') {
-            let picName = document.getElementById('res-pic').files[0] ? "Photo Attached" : "No Photo";
-            dataStr = `Action: ${document.getElementById('res-type').value} | Pic: ${picName}`;
-        } else if(type === 'Other Work') {
-            dataStr = `Details: ${document.getElementById('ow-detail').value}`;
-        }
-
-        const logEntry = {
-            id: Date.now(),
-            type: type,
-            date: new Date().toISOString().split('T')[0],
-            time: new Date().toLocaleTimeString(),
-            details: dataStr
-        };
-
-        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
-        logs.push(logEntry);
-        localStorage.setItem('js_work_data', JSON.stringify(logs));
-
-        alert(`${type} data saved successfully in permanent storage!`);
-        event.target.reset();
-        nav('home');
-    }
-
-    // Load History with Month Filter
-    function loadHistory() {
-        nav('page-history');
-        const container = document.getElementById('history-content');
-        container.innerHTML = "";
-        
-        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
-        let monthFilter = document.getElementById('month-filter').value;
-
-        if(monthFilter) {
-            logs = logs.filter(item => item.date.startsWith(monthFilter));
-        }
-
-        if(logs.length === 0) {
-            container.innerHTML = "<p style='text-align:center;'>No records found for this period.</p>";
-            return;
-        }
-
-        logs.reverse().forEach(item => {
-            container.innerHTML += `
-                <div class="data-card">
-                    <h4>${item.type} <span style="float:right; font-size:0.8rem; color:gray;">${item.date}</span></h4>
-                    <p>${item.details}</p>
-                    <button class="delete-btn" onclick="deleteLog(${item.id})">Delete</button>
-                </div>
-            `;
-        });
-    }
-
-    // Delete Log
-    function deleteLog(id) {
-        if(confirm("Parmanent delete karna chahte hain?")) {
-            let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
-            logs = logs.filter(item => item.id !== id);
-            localStorage.setItem('js_work_data', JSON.stringify(logs));
-            loadHistory();
-        }
-    }
-
-    // Export to Excel (CSV)
-    function exportExcel() {
-        let logs = JSON.parse(localStorage.getItem('js_work_data')) || [];
-        let monthFilter = document.getElementById('month-filter').value;
-        if(monthFilter) logs = logs.filter(item => item.date.startsWith(monthFilter));
-
-        if(logs.length === 0) { alert("Excel banane ke liye koi data nahi hai."); return; }
-
-        let csvContent = "data:text/csv;charset=utf-8,Date,Time,Task Type,Details\n";
-        logs.forEach(item => {
-            let cleanDetails = item.details.replace(/,/g, " ");
-            csvContent += `${item.date},${item.time},${item.type},${cleanDetails}\n`;
-        });
-
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Work_Report_${monthFilter || 'All'}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
-    // Export to PDF
-    function exportPDF() {
-        const element = document.getElementById('export-area');
-        const opt = {
-            margin:       10,
-            filename:     'Work_Report.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
-    }
-</script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .then(() => console.log("Service Worker Registered"))
-      .catch(err => console.log("Service Worker Error:", err));
-  });
-}
-</script>
-
-<script>
-// Fix 2: Fixed complete PWA setup logic here
-let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-
-  if(document.getElementById("installAppBtn")) return;
-
-  const btn = document.createElement("button");
-  btn.id = "installAppBtn";
-  btn.innerHTML = "📲 Install App";
-
-  btn.style.position = "fixed";
-  btn.style.bottom = "20px";
-  btn.style.right = "20px";
-  btn.style.background = "#1e3c72";
-  btn.style.color = "#fff";
-  btn.style.border = "none";
-  btn.style.padding = "12px 18px";
-  btn.style.borderRadius = "12px";
-  btn.style.fontSize = "16px";
-  btn.style.fontWeight = "bold";
-  btn.style.zIndex = "9999";
-  btn.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
-  btn.style.cursor = "pointer";
-
-  document.body.appendChild(btn);
-
-  btn.addEventListener("click", async () => {
-      btn.style.display = "none";
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`User response to prompt: ${outcome}`);
-      deferredPrompt = null;
-      btn.remove();
-  });
-});
-
-window.addEventListener('appinstalled', () => {
-    console.log('PWA installed successfully!');
-    const btn = document.getElementById("installAppBtn");
-    if (btn) btn.remove();
-});
-</script>
-
-</body>
-</html>
+            dataStr = `ISP: ${document.getElementById('i-isp').value} | Order: ${document.getElementById('i-order').value} | IPTV: ${document.getElementById('i-iptv').value} | City: ${document.getElementById('i-city').value} | Site: ${document.getElementById('i-site').value} | Name: ${document.getElementById('i-name').value} | Mobile: ${document.getElementById('i-mobile').value} | Addr
